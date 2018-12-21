@@ -51,6 +51,9 @@ Page({
   onGetOpenid: function() {
     questionService.findCategoryByLevel({
       level:5,
+      query:{
+        
+      },
       success(res){
         console.log(res)
       }
