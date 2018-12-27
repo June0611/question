@@ -135,3 +135,35 @@ page {
   line-height: 36rpx;
   word-break: break-all;
 }
+
+.longBtn{
+  width: 600rpx;
+  background-color: #3f9673;
+  color: #ffffff;
+  height: 90rpx;
+  line-height: 90rpx;
+  border: none;
+  font-size: 34rpx;
+  margin-top: 40rpx;
+}
+.empty{
+  background-color: #f4f4f4;
+  color: #808080;
+  margin-bottom: 5rpx;
+  border: 1px solid #f4f4f4;
+}
+.mainTitle{
+  margin-top: 86rpx;
+  font-size: 70rpx;
+  line-height: 70rpx;
+  font-weight: bolder;
+  color: #343434;
+}
+.subTitle{
+  font-size: 50rpx;
+  line-height: 50rpx;
+  margin-top: 40rpx;
+  margin-bottom: 70rpx;
+  color: #c0c0c0;
+  font-weight: bold;
+}

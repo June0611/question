@@ -1,0 +1,19 @@
+/* miniprogram/pages/first/first.wxss */
+.mainTitle{
+  margin-top: 86rpx;
+  font-size: 70rpx;
+  line-height: 70rpx;
+  font-weight: bolder;
+  color: #343434;
+  margin-bottom: 180rpx;
+}
+.longBtn{
+  width: 600rpx;
+  background-color: #3f9673;
+  color: #ffffff;
+  height: 90rpx;
+  line-height: 90rpx;
+  border: none;
+  font-size: 34rpx;
+  margin-top: 40rpx;
+}

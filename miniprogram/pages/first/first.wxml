@@ -1,0 +1,10 @@
+<!--miniprogram/pages/first/first.wxml-->
+<view class="container">
+  <view class='mainTitle'>
+    乐理术语
+  </view>
+  <button class='longBtn' bindtap="selectFive">英皇五级</button>
+  <button class='longBtn' bindtap="selectEight">英皇八级</button>
+  <button class='longBtn' bindtap="wronghistory">错题记录</button>
+
+</view>

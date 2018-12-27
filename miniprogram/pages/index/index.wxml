@@ -1,10 +1,14 @@
 <!--index.wxml-->
 <view class="container">
-<view>音乐</view>
-
-<button type='primary'  bindtap="onGetOpenid">英皇五级</button>
-
-<button type='primary'  bindtap="onGetOpenid">英皇八级</button>
+  <view class='mainTitle'>
+    乐理术语
+  </view>
+  <view class='subTitle'>
+    英皇五级
+  </view>
+  <!-- <button class='longBtn' bindtap="onGetOpenid">速度</button> -->
+  <button class='longBtn' bindtap="goNextPage" data-id="{{ item._id }}" wx:for="{{btnArray}}" wx:key="item._id" >{{ item.categoryName }}</button>
+  <button class='longBtn empty' open-type="share">分享给同学</button>
 
   <!-- 用户 openid -->
   <!-- <view class="userinfo">

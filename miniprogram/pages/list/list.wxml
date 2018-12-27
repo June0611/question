@@ -1,0 +1,22 @@
+<!--miniprogram/pages/list/list.wxml-->
+<view class="container">
+  <loading hidden="{{hidden}}">
+      加载中...
+  </loading>
+  <view class="title {{ titleType }}" wx:if="{{ titleType == 'text' }}">
+    {{ title }}
+  </view>
+  <view class="title {{ titleType }}" wx:else>
+    <image src="{{title}}"></image>
+  </view>
+  <view class="select-items">
+    <radio-group class="radio-group" bindchange="radioChange">
+      <label class="select-item" wx:for="{{items}}" wx:key="index" >
+        <radio class="" value="{{item.correct}}" checked="{{ ifChecked }}"/>
+        {{item.content}}
+      </label>
+    </radio-group>
+    <button class='longBtn' wx:if="{{tf=='false'}}" bindtap="nextProblem">下一题</button>
+    <button class='longBtn' bindtap="putNote">加入错题集</button>
+  </view>
+</view>

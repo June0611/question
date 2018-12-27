@@ -9,10 +9,12 @@ Page({
     userInfo: {},
     logged: false,
     takeSession: false,
-    requestResult: ''
+    requestResult: '',
+    lev: 0,
+    btnArray: []
   },
 
-  onLoad: function() {
+  onLoad: function (option) {
     if (!wx.cloud) {
       wx.redirectTo({
         url: '../chooseLib/chooseLib',
@@ -36,8 +38,30 @@ Page({
         }
       }
     })
-  },
+    this.setData({
+      lev: option.lev
+    })
 
+    wx.showLoading({
+      title: '加载中',
+    })
+
+    let _this = this
+    questionService.findCategoryByLevel({
+      level: this.lev,
+      query: {},
+      success(res) {
+        _this.setData({
+          btnArray: res.data
+        })
+        wx.hideLoading()
+      }
+    })
+  },
+  goNextPage: function (event) {
+    console.log(event.currentTarget.dataset.id)
+    wx.navigateTo({ url: '../list/list?id=' + event.currentTarget.dataset.id})
+  },
   onGetUserInfo: function(e) {
     if (!this.logged && e.detail.userInfo) {
       this.setData({
