@@ -78,5 +78,6 @@ Page({
 
   wronghistory: function () {
     // 错题集
+    wx.navigateTo({ url: '../wrong/wrong' })
   }
 })

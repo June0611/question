@@ -3,7 +3,8 @@
   "pages": [
     "pages/first/first",
     "pages/index/index",
-    "pages/list/list"
+    "pages/list/list",
+    "pages/wrong/wrong"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

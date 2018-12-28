@@ -1,4 +1,4 @@
-<!--miniprogram/pages/list/list.wxml-->
+<!--miniprogram/pages/wrong/wrong.wxml-->
 <view class="container">
   <loading hidden="{{hidden}}">
       加载中...
@@ -17,6 +17,6 @@
       </label>
     </radio-group>
     <button class='longBtn' wx:if="{{tf=='false'}}" bindtap="nextProblem">下一题</button>
-    <button class='longBtn' bindtap="putNote">加入错题集</button>
+    <button class='longBtn' bindtap="delNote">删除错题集</button>
   </view>
 </view>

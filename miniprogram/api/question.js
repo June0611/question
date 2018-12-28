@@ -107,8 +107,15 @@ const findAnswerWrongQuestion = obj => {
   }
   query.get({
     success(res) {
+      console.log(res)
       if (obj.success) {
         obj.success(res)
+      }
+    },
+    fail(err) {
+      console.log(err)
+      if (obj.fail) {
+        obj.fail(err)
       }
     }
   })
@@ -214,6 +221,11 @@ const findQuestionDetail = obj => {
     success(res){
       if (obj.success) {
         obj.success(res)
+      }
+    },
+    fail(err) {
+      if(obj.fail){
+        obj.fail(err)
       }
     }
   })

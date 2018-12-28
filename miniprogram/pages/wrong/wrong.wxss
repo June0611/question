@@ -1,0 +1,61 @@
+/* miniprogram/pages/wrong/wrong.wxss */
+page{
+  height: 100%;
+}
+.container{
+  padding: 0 38rpx;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+.title{
+  border-bottom: 1px solid #ececec;
+  width: 100%;
+}
+/* 标题内容可能有两种 */
+/* 图片和文字        */
+.title.text{
+  height: 154rpx;
+  line-height: 154rpx;
+  font-size: 50rpx;
+  color: #111111;
+  font-weight: bolder;
+}
+.title.img{
+
+}
+.select-items{
+  width: 100%;
+}
+.radio-group{}
+.select-item{
+  width: 100%;
+  border: 1px solid #e2e2e2;
+  background-color: #efefef;
+  padding: 24rpx;
+  box-sizing: border-box;
+  margin-top: 44rpx;
+  display: flex;
+  border-radius: 15rpx;
+}
+.select-item.right{
+  text-decoration:line-through;
+}
+.select-item radio{
+  display: flex;
+}
+radio .wx-radio-input{
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.longBtn{
+  width: 600rpx;
+  background-color: #3f9673;
+  color: #ffffff;
+  height: 90rpx;
+  line-height: 90rpx;
+  border: none;
+  font-size: 34rpx;
+  margin-top: 40rpx;
+}
