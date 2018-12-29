@@ -42,6 +42,8 @@ const findCategoryByLevel = obj => {
   if(skip > 0){
     query = query.skip(skip)
   }
+
+  
   query.get({
     success(res) {
       console.log(res)

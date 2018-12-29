@@ -69,3 +69,7 @@ radio .wx-radio-input{
 .select-item.selected{
   text-decoration: line-through;
 }
+.img image{
+  width: auto;
+  height: 100px;
+}
