@@ -95,7 +95,7 @@ Page({
         })
       }
     } else {
-      this.getNextProblem()
+      // this.getNextProblem()
     }
   },
   selectRadio: function (e) {
