@@ -1,4 +1,4 @@
-// miniprogram/pages/wrong/wrong.js
+// miniprogram/pages/list/list.js
 const questionService = require('../../api/question.js')
 const app = getApp()
 
@@ -10,16 +10,18 @@ Page({
   data: {
     items: [],          // 数据
     id: '',             // 当前题目类型
+    _id: '',
     getId: '',          // 当前题目的id
     typeClass: 1,       // 区分问题name是图片描述还是文字描述    1  文字  2  图片
     selectType: 1,      // 区分是多选题,单选题等
     title: '',          // 标题内容
     titleType: 'text',  // 判定标题是否是图片  text img
-    tf: true,           // 当前是否作对
+    tf: 'false',           // 当前是否作对
     hidden: false,      // 加载动画
     currentPage: 0,     // 默认当前页 0  每页数据20条
     pageNumber: 1,      // 当前累计请求的条数  最大20条  超出置零
     ifChecked: false,
+    current_item: -1
   },
 
   /**
@@ -34,6 +36,7 @@ Page({
         num: _this.data.pageNumber
       },
       success(res) {
+        console.log(res)
         if (res.data.length <= 0) {
           _this.setData({
             hidden: true,
@@ -47,8 +50,10 @@ Page({
           })
           return
         }
-        console.log(res, res.data[0])
         // 获取到当前的
+        _this.setData({
+          _id: res.data[0]._id
+        })
         _this.getDetails(res.data[0].questionId)
       },
       fail(err) {
@@ -57,48 +62,6 @@ Page({
         })
       }
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
   },
 
   /**
@@ -112,30 +75,52 @@ Page({
    * 自定义事件部分
    */
   radioChange: function (e) {
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
+    /*
+     *  此处设置如果  e.detail.value == 'false'
+     *  1、所有全部禁用
+     *  2、选正确的
+     *  3、错误的横线
+     * 
+     *  此处设置如果  e.detail.value == 'true'
+     *  不做处理
+     */
     if (e.detail.value == 'false') {
-      this.setData({
-        tf: e.detail.value
-      })
+      let tmpItems = [];
+      for (let i = 0; i < this.data.items.length; i++) {
+        let itemdisabled = 'items[' + i + '].disabled'
+        let itemstatus = 'items[' + i + '].status'
+        this.setData({
+          [itemdisabled]: true,
+          [itemstatus]: this.data.items[i].correct
+        })
+      }
     } else {
       this.getNextProblem()
     }
-
+  },
+  selectRadio: function (e) {
+    console.log(e.currentTarget.dataset.status == true)
+    if (e.currentTarget.dataset.status == true) {
+      return
+    }
+    let cuu = e.currentTarget.dataset.key;//获取index值
+    this.setData({
+      current_item: cuu
+    })
   },
   nextProblem: function () {
     this.getNextProblem()
   },
-  getNextProblem: function () {
+  getNextProblem: function (type) {
     // 获取下一题
     let _this = this
     this.setData({
-      hidden: false
+      hidden: false,
+      ifChecked: false
     })
     this.setData({
-      pageNumber: _this.data.pageNumber == 20 ? 0 : (_this.data.pageNumber + 1),
-      currentPage: _this.data.pageNumber == 20 ? (currentPage + 1) : _this.data.pageNumber
+      currentPage: ++_this.data.currentPage
     })
-
     questionService.findAnswerWrongQuestion({
       openId: app.globalData.openId,
       query: {
@@ -148,6 +133,12 @@ Page({
             hidden: true,
             tf: true
           })
+          if(type) {
+            _this.setData({
+              items: [],
+              title: ''
+            })
+          }
           wx.showToast({
             title: '没有更多了',
             icon: 'none',
@@ -156,34 +147,34 @@ Page({
           })
           return
         }
-        console.log(res, res.data[0].questionId)
         // 获取到当前的
+        _this.setData({
+          _id: res.data[0]._id
+        })
         _this.getDetails(res.data[0].questionId)
       },
       fail(err) {
-        console.log(err)
         _this.setData({
           hidden: true
         })
       }
     })
-
   },
   delNote: function () {
-    console.log(this.data.getId)
+    console.log(this.data._id)
     let _this = this
     this.setData({
       hidden: false
     })
     // 删除错题集
     questionService.deleteAnswerWrongQuestion({
-      id: this.data.getId,
+      id: this.data._id,
       success(res) {
         console.log(res)
         _this.setData({
           hidden: true
         })
-
+        _this.getNextProblem('del')
         wx.showToast({
           title: '删除错题成功',
           icon: 'success',
@@ -205,23 +196,28 @@ Page({
       }
     })
   },
-  getDetails (id) {
+  getDetails(id) {
     let _this = this
+    console.log(id)
     questionService.findQuestionDetail({
       questionId: id,
-      success (res) {
-        console.log(res)
+      success(res) {
+        for (let i = 0; i < res.data.options.length; i++) {
+          res.data.options[i].status = false
+          res.data.options[i].disabled = false
+        }
         _this.setData({
-          items: questionService.shuffle(res.data[0].options),
-          getId: res.data[0].categoryId,
-          typeClass: res.data[0].question_type,
-          title: res.data[0].question_name,
-          selectType: res.data[0].type,
+          current_item: -1,
+          items: questionService.shuffle(res.data.options),
+          getId: res.data.categoryId,
+          typeClass: res.data.question_type,
+          title: res.data.question_name,
+          selectType: res.data.type,
           titleType: _this.data.typeClass === 1 ? 'text' : 'img',
           hidden: true
         })
       },
-      fail (){
+      fail() {
         wx.showToast({
           title: '加载失败',
           icon: 'none',

@@ -59,3 +59,12 @@ radio .wx-radio-input{
   font-size: 34rpx;
   margin-top: 40rpx;
 }
+.empty{
+  background-color: #f4f4f4;
+  color: #808080;
+  margin-bottom: 5rpx;
+  border: 1px solid #f4f4f4;
+}
+.select-item.selected{
+  text-decoration: line-through;
+}

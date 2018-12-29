@@ -11,12 +11,13 @@
   </view>
   <view class="select-items">
     <radio-group class="radio-group" bindchange="radioChange">
-      <label class="select-item" wx:for="{{items}}" wx:key="item.correct" >
-        <radio class="" value="{{item.correct}}" checked="{{ ifChecked }}"/>
+      <label class="select-item {{ current_item === index?'selected':'' }}" wx:for="{{items}}" wx:key="item.correct" bindtap="selectRadio" data-key="{{index}}" data-status="{{item.correct}}">
+        <!-- <radio class="" value="{{item.correct}}" checked="{{ ifChecked }}"/> -->
+        <radio class="" value="{{item.correct}}" checked="{{ item.status }}" disabled="{{ item.disabled }}"/>
         {{item.content}}
       </label>
     </radio-group>
     <button class='longBtn' wx:if="{{tf=='false'}}" bindtap="nextProblem">下一题</button>
-    <button class='longBtn' bindtap="delNote">删除错题集</button>
+    <button class='longBtn empty' bindtap="delNote">删除错题集</button>
   </view>
 </view>

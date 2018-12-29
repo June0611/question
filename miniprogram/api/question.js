@@ -75,6 +75,7 @@ const findQuestionByCategory = obj => {
   }
   query.get({
     success(res) {
+      console.log(res)
       if (obj.success) {
         obj.success(res)
       }

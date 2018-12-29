@@ -15,11 +15,13 @@ Page({
     selectType: 1,      // 区分是多选题,单选题等
     title: '',          // 标题内容
     titleType: 'text',  // 判定标题是否是图片  text img
-    tf: true,           // 当前是否作对
+    tf: 'false',           // 当前是否作对
     hidden: false,      // 加载动画
     currentPage: 0,     // 默认当前页 0  每页数据20条
     pageNumber: 1,      // 当前累计请求的条数  最大20条  超出置零
     ifChecked: false,
+    current_item: -1,
+    note: 'false'
   },
 
   /**
@@ -31,26 +33,44 @@ Page({
     })
     let _this = this
     questionService.findQuestionByCategory({
-      categoryId: this.id,
+      categoryId: _this.data.id,
       query: {
         row: _this.data.currentPage,
         num: _this.data.pageNumber
       },
       success(res) {
+        console.log(res)
+        if (res.data.length <= 0) {
+          _this.setData({
+            hidden: true,
+            tf: 'true',
+            note: 'true'
+          })
+          wx.showToast({
+            title: '没有更多了',
+            icon: 'none',
+            duration: 1500,
+            mask: true
+          })
+          return
+        }
+        for (let i = 0; i < res.data[0].options.length; i++) {
+          res.data[0].options[i].status = false
+          res.data[0].options[i].disabled = false
+        }
         _this.setData({
           items: questionService.shuffle(res.data[0].options),
-          getId: res.data[0].categoryId,
+          getId: res.data[0]._id,
           typeClass: res.data[0].question_type,
           title: res.data[0].question_name,
           selectType: res.data[0].type,
           titleType: _this.data.typeClass === 1 ? 'text':'img',
           hidden: true
         })
-        console.log(_this.data.items)
         if (_this.data.items.length <= 0) {
           _this.setData({
             hidden: true,
-            tf: true
+            tf: 'true'
           })
           wx.showToast({
             title: '没有更多了',
@@ -65,48 +85,6 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
@@ -118,14 +96,49 @@ Page({
    */
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value)
-    if (e.detail.value == 'false'){
+    // if (e.detail.value == 'false'){
+    //   this.setData({
+    //     tf: e.detail.value
+    //   })
+    // }else{
+    //   this.getNextProblem()
+    // }
+    /*
+     *  此处设置如果  e.detail.value == 'false'
+     *  1、所有全部禁用
+     *  2、选正确的
+     *  3、错误的横线
+     * 
+     *  此处设置如果  e.detail.value == 'true'
+     *  不做处理
+     */
+    if (e.detail.value == 'false') {
+      this.putNote()
       this.setData({
-        tf: e.detail.value
+        note: 'true'
       })
+      let tmpItems = [];
+      for (let i = 0; i < this.data.items.length; i++) {
+        let itemdisabled = 'items[' + i + '].disabled'
+        let itemstatus = 'items[' + i +'].status'
+        this.setData({
+          [itemdisabled]: true,
+          [itemstatus]: this.data.items[i].correct
+        })
+      }
     }else{
       this.getNextProblem()
     }
-    
+  },
+  selectRadio: function (e) {
+    console.log(e.currentTarget.dataset.status == true)
+    if (e.currentTarget.dataset.status == true){
+      return
+    }
+    let cuu = e.currentTarget.dataset.key;//获取index值
+    this.setData({
+      current_item: cuu
+    })
   },
   nextProblem: function () {
     this.putNote()
@@ -136,36 +149,41 @@ Page({
     let _this = this
     this.setData({
       hidden: false,
-      ifChecked: false
+      ifChecked: false,
+      note: 'false',
+      tf: 'false'
     })
     this.setData({
-      pageNumber: _this.data.pageNumber == 20 ? 0 : (_this.data.pageNumber+1),
-      currentPage: _this.data.pageNumber == 20 ? (currentPage + 1) : _this.data.pageNumber
+      // pageNumber: _this.data.pageNumber == 20 ? 0 : (_this.data.pageNumber+1),
+      currentPage: ++_this.data.currentPage
     })
     
     questionService.findQuestionByCategory({
-      categoryId: this.id,
+      categoryId: _this.data.id,
       query: {
         row: _this.data.currentPage,
         num: _this.data.pageNumber
       },
       success(res) {
+        for (let i = 0; i < res.data[0].options.length; i++) {
+          res.data[0].options[i].status = false
+          res.data[0].options[i].disabled = false
+        }
         _this.setData({
+          current_item: -1,
           items: questionService.shuffle(res.data[0].options),
-          getId: res.data[0].categoryId,
+          getId: res.data[0]._id,
           typeClass: res.data[0].question_type,
           title: res.data[0].question_name,
           selectType: res.data[0].type,
           titleType: _this.data.typeClass === 1 ? 'text' : 'img',
           hidden: true,
-          tf: true
+          tf: 'false'
         })
-        this.setData({
-          hidden: false
-        })
+      
         if (_this.data.items.length <= 0) {
           _this.setData({
-            tf: true
+            tf: 'true'
           })
           wx.showToast({
             title: '没有更多了',
