@@ -48,7 +48,7 @@ Page({
 
     let _this = this
     questionService.findCategoryByLevel({
-      level: this.lev,
+      level: _this.data.lev,
       query: {},
       success(res) {
         _this.setData({

@@ -34,6 +34,7 @@ const findCategoryByLevel = obj => {
   let num = obj.query && obj.query.num ? obj.query.num : 20
   let skip = row * num
 
+  console.log(obj)
   var query = db.collection('question_category').where({
     level:obj.level
   }).limit(num)
@@ -43,6 +44,7 @@ const findCategoryByLevel = obj => {
   }
   query.get({
     success(res) {
+      console.log(res)
       if (obj.success){
         obj.success(res)
       }
