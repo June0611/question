@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
   try {
     // return await db.collection('question').doc('XByaL4nnuWjciuhw')
     return await db.collection('question').where({
-      version: event.version
+      verson: event.version
     }).remove()
   } catch (e) {
     console.error(e)
