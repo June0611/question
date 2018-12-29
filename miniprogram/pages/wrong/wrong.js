@@ -213,7 +213,7 @@ Page({
           typeClass: res.data.question_type,
           title: res.data.question_name,
           selectType: res.data.type,
-          titleType: _this.data.typeClass === 1 ? 'text' : 'img',
+          titleType: res.data.question_type === 1 ? 'text' : 'img',
           hidden: true
         })
       },
