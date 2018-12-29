@@ -7,7 +7,7 @@
     {{ title }}
   </view>
   <view class="title {{ titleType }}" wx:else>
-    <image src="{{title}}"></image>
+    <image src="{{title}}" mode='widthFix'></image>
   </view>
   <view class="select-items">
     <radio-group class="radio-group" bindchange="radioChange">

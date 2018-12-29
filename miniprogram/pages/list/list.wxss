@@ -22,6 +22,7 @@ page{
   font-weight: bolder;
 }
 .title.img{
+  
 
 }
 .select-items{
@@ -69,3 +70,9 @@ radio .wx-radio-input{
 .select-item.selected{
   text-decoration: line-through;
 }
+
+
+
+/* .img .image{
+  height: 100px;
+} */

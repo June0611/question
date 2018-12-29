@@ -64,7 +64,7 @@ Page({
           typeClass: res.data[0].question_type,
           title: res.data[0].question_name,
           selectType: res.data[0].type,
-          titleType: _this.data.typeClass === 1 ? 'text':'img',
+          titleType: res.data[0].question_type === 1 ? 'text':'img',
           hidden: true
         })
         if (_this.data.items.length <= 0) {
