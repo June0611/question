@@ -141,7 +141,8 @@ const findAnswerWrongCount = obj => {
   }).count({
     success(res) {
       console.log(res.total)
-      }
+      obj.success(res)
+    }
   })
 }
 

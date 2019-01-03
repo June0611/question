@@ -4,10 +4,13 @@
       加载中...
   </loading> -->
   <view class="title {{ titleType }}" wx:if="{{ titleType == 'text' }}">
-    {{wrongCount}}{{ title }}
+    {{ title }}
   </view>
   <view class="title {{ titleType }}" wx:else>
     <image src="{{title}}"></image>
+  </view>
+  <view class="process">
+    {{current}} / {{wrongCount}}
   </view>
   <view class="select-items">
     <radio-group class="radio-group" bindchange="radioChange">

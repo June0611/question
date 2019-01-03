@@ -8,7 +8,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    wrongCount: 0,      // 总错题数
     items: [],          // 数据
     id: '',             // 当前题目类型
     _id: '',
@@ -21,8 +20,10 @@ Page({
     hidden: false,      // 加载动画
     currentPage: 0,     // 默认当前页 0  每页数据20条
     pageNumber: 1,      // 当前累计请求的条数  最大20条  超出置零
-    ifChecked: false,
-    current_item: -1
+    ifChecked: false,   // 是否选中
+    current_item: -1,   // 当前radio的选项
+    current: 0,         // 当前题目的位置
+    wrongCount: 0,      // 总错题数
   },
 
   /**
@@ -36,7 +37,20 @@ Page({
     // console.log(app.globalData.openId)
     //var a=questionService.findAnswerWrongCount(app.globalData.openId)
     // console.log(questionService.findAnswerWrongCount(app.globalData.openId))
-
+    questionService.findAnswerWrongCount({
+      openId: app.globalData.openId,
+      success: function (res) {
+        console.log(res)
+        if(res.total <= 0) {
+          _this.setData({
+            current: 0
+          })
+        }
+        _this.setData({
+          wrongCount: res.total
+        })
+      }
+    })
 
     questionService.findAnswerWrongQuestion({
       openId: app.globalData.openId,
@@ -227,6 +241,7 @@ Page({
           res.data.options[i].status = false
           res.data.options[i].disabled = false
         }
+        let midData = _this.data.current + 1
         _this.setData({
           current_item: -1,
           items: questionService.shuffle(res.data.options),
@@ -235,8 +250,10 @@ Page({
           title: res.data.question_name,
           selectType: res.data.type,
           titleType: res.data.question_type === 1 ? 'text' : 'img',
-          hidden: true
+          hidden: true,
+          current: midData
         })
+        console.log(_this.data.current)
       },
       fail() {
         wx.showToast({

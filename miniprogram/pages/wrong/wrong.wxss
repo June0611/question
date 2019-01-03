@@ -74,3 +74,9 @@ radio .wx-radio-input{
   padding-top: 38rpx;
   height: 100px;
 }
+.process{
+  line-height: 40rpx;
+  font-size: 34rpx;
+  color: #999;
+  padding-top: 10px;
+}
