@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    wrongCount: 0,      // 总错题数
     items: [],          // 数据
     id: '',             // 当前题目类型
     _id: '',
@@ -29,6 +30,14 @@ Page({
    */
   onLoad: function (options) {
     let _this = this
+    
+    //获取到错题总数
+    // wrongCount:questionService.findAnswerWrongCount(app.globalData.openId)
+    // console.log(app.globalData.openId)
+    //var a=questionService.findAnswerWrongCount(app.globalData.openId)
+    // console.log(questionService.findAnswerWrongCount(app.globalData.openId))
+
+
     questionService.findAnswerWrongQuestion({
       openId: app.globalData.openId,
       query: {
@@ -52,8 +61,12 @@ Page({
         }
         // 获取到当前的
         _this.setData({
-          _id: res.data[0]._id
+          _id: res.data[0]._id,
         })
+        // 获取到当前的错误数-han
+        // _this.setData({
+        //   wrongcount: this.getcount
+        // })
         _this.getDetails(res.data[0].questionId)
       },
       fail(err) {
@@ -96,6 +109,12 @@ Page({
       }
     } else {
       // this.getNextProblem()
+      wx.showToast({
+        title: '答对了！',
+        icon: 'success',
+        mask: true,
+        duration: 2000
+      })
     }
   },
   selectRadio: function (e) {
@@ -196,6 +215,8 @@ Page({
       }
     })
   },
+
+
   getDetails(id) {
     let _this = this
     console.log(id)

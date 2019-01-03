@@ -129,6 +129,12 @@ Page({
       }
     }else{
       this.getNextProblem()
+      wx.showToast({
+        title: '答对了！',
+        icon: 'none',
+        duration: 1500,
+        mask: true
+      })
     }
   },
   selectRadio: function (e) {
@@ -142,7 +148,7 @@ Page({
     })
   },
   nextProblem: function () {
-    this.putNote()
+    // this.putNote()
     this.getNextProblem()
   },
   getNextProblem: function () {
@@ -214,7 +220,7 @@ Page({
         })
 
         wx.showToast({
-          title: '加入错题成功',
+          title: '☹！加入错题集',
           icon: 'success',
           mask: true,
           duration: 2000

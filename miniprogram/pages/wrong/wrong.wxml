@@ -1,10 +1,10 @@
 <!--miniprogram/pages/wrong/wrong.wxml-->
 <view class="container">
-  <loading hidden="{{hidden}}">
+  <!-- <loading hidden="{{hidden}}">
       加载中...
-  </loading>
+  </loading> -->
   <view class="title {{ titleType }}" wx:if="{{ titleType == 'text' }}">
-    {{ title }}
+    {{wrongCount}}{{ title }}
   </view>
   <view class="title {{ titleType }}" wx:else>
     <image src="{{title}}"></image>

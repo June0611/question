@@ -19,7 +19,7 @@ const db = wx.cloud.database()
 
 
 /**
- * 根据等级查找问题类别
+ * 1、根据等级查找问题类别
  * obj {
  *    level:1        //等级1,2,3,4,5,6,7,8
  *    query:{
@@ -56,7 +56,7 @@ const findCategoryByLevel = obj => {
 
 
 /**
- * 根据问题类别查找问题
+ *2、 根据问题类别查找问题
  * obj {
  *    categoryId:id,//类别ID
  *    query:{
@@ -88,8 +88,12 @@ const findQuestionByCategory = obj => {
 }
 
 
+
+
+
+
 /**
- * 3.查找错误问题(分页)
+ * 3、.查找错误问题(分页)
  * openId:'',
  * query:{
  *    row:0, //default
@@ -127,9 +131,22 @@ const findAnswerWrongQuestion = obj => {
 
 }
 
+/**
+ * 4、.查找错误问题总数
+ * openId:'',
+ */
+const findAnswerWrongCount = obj => {
+  db.collection('answer_wrong').where({
+    openId: obj.openId,
+  }).count({
+    success(res) {
+      console.log(res.total)
+      }
+  })
+}
 
 /**
- * //4.删除错误问题
+ * //5.删除错误问题
  * obj:{
  *    id:错误问题ID//非问题ID
  *    success(res){}//成功回调
@@ -155,7 +172,7 @@ const deleteAnswerWrongQuestion = obj => {
 
 
 /**
- * //5.报告错误问题
+ * //6.报告错误问题
  * obj:{
  *    questionId:'',//问题ID
  *    openId:''//用户openID,从登陆接口获取
@@ -215,7 +232,7 @@ const reportAnswerWrongQuestion = obj => {
 
 //
 /**
- * 6.获取问题详情
+ * 7.获取问题详情
  * obj:{
  *    questionId:'',//问题ID
  *    success(res){}//回调
@@ -236,7 +253,7 @@ const findQuestionDetail = obj => {
   })
 }
 
-// 打散数组函数
+// 8、打散数组函数
 const shuffle = (aArr) => {
   aArr.sort(randomsort);
   return aArr
@@ -251,6 +268,7 @@ module.exports = {
   reportAnswerWrongQuestion: reportAnswerWrongQuestion, 
   deleteAnswerWrongQuestion: deleteAnswerWrongQuestion,
   findAnswerWrongQuestion  : findAnswerWrongQuestion,
+  findAnswerWrongCount     : findAnswerWrongCount,
   findQuestionByCategory   : findQuestionByCategory,
   findCategoryByLevel      : findCategoryByLevel ,
   findQuestionDetail       : findQuestionDetail,
